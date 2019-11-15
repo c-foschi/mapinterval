@@ -1,0 +1,17 @@
+Package: mlintervals
+Type: Package
+Title: Interpolation of interval averaged data using a maximum likelihood method
+Version: 0.1.0
+Authors@R: person("Carlo", "Foschi", email = "carlo.foschi93@yahoo.it",
+                  role = c("aut", "cre"))
+Description: Package providing function interv_fit for interpolating values of a
+    stochastic process Y, given a series of observed integrals of the process over
+	equal time intervals, assuming that Y is a Wiener process. The package allows
+	for estimation of scale parameter sigma2 when assuming homoskedaticity,
+	and for plotting confidence bands.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: limSolve
+URL: http://github.com/c-foschi/mlintervals
+RoxygenNote: 6.1.1
