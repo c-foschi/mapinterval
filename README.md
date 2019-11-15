@@ -1,5 +1,5 @@
 # mlintervals
-R package for interpolating interval average data. Only method provided is a mean conserving quadratic spline that happens to be the maximum likelihood estimator for a Winer data generating process.
+R package for interpolating interval average data. Only method provided is a mean conserving quadratic spline that happens to be the maximum likelihood estimator for a Wiener data generating process.
 
 ## Installing
 Package can be installad directly from source using devtools:
