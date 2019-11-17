@@ -62,14 +62,15 @@
 #' @export
 interv_fit= function(M, t_0= 0, t_unit= 1, t_end= NULL) {
 
-	stopifnot(is.numeric(t_0), is.numeric(t_unit), length(t_0) == 1, length(t_unit) == 1)
-	if (!is.vector(M) || !is.numeric(M))
-		stop('M must be a numeric vector')
+	# TODO: 2 intervals case
+	if (!is.vector(M) || !is.numeric(M) || length(M) < 3)
+		stop('M must be a numeric vector with at least 3 elements')
 
 	n= length(M)
 
 	if (!is.null(t_end))
 		t_unit= (t_end-t_0)/n
+	stopifnot(length(t_0+t_unit) == 1)
 
 	# setting tridiagonal system to find knots values
 	B= c(3*M[1], 6*M[-c(1, n)]) + c(6*M[-c(1, n)], 3*M[n])
@@ -102,7 +103,7 @@ interv_fit= function(M, t_0= 0, t_unit= 1, t_end= NULL) {
 	k= n-15
 	if (k > 0) {
 		SEs= c(SEs[1:7], rep(SEs[7], k), SEs[8:14])
-		covariances= c(covariances[1:6], rep(covariances[7], k-1), covariances[8:13])
+		covariances= c(covariances[1:6], rep(covariances[7], k+1), covariances[8:13])
 	}
 
 	out= list(data= M, t_0= t_0, t_unit= t_unit, knots= knots, sigma2= sigma2, se= SEs,
@@ -142,8 +143,9 @@ print.interv_fit= function(x, ...) {
 #' @export
 predict.interv_fit= function(object, t, se.fit= FALSE, ...) {
 
-	if (!is.vector(t) || !is.numeric(t))
-		stop('A numeric vector is required for t')
+	# TODO: controlli pure qua, e provare con le date
+	#if (!is.vector(t) || !is.numeric(t))
+	#	stop('A numeric vector is required for t')
 	# rescaling t to unit intervals starting from 0
 	t= (t-object$t_0)/object$t_unit
 	if (any(t < 0 | t > length(object$data)))
@@ -232,13 +234,14 @@ plot.interv_fit= function(x, ..., from= NULL, to= NULL, points= 300,
 		from= t_0
 	if (is.null(to)) {
 		if (t_end-from > 20*t_unit)
-			warning('Series is too long, only first 20 intervals were plotted. Manually
-							fix plotting window to avoid this limit')
+			warning('Series is too long, only first 20 intervals were plotted.
+Manually fix plotting window to avoid this limit')
 		to= min(from+20*t_unit, t_end)
 	}
 	t= seq(from, to, length.out= points)
 
-	# computing bands
+	# computing function and bands
+	p= predict.interv_fit(x, t, se.fit= plot_bands)
 	ylim= NULL
 	if (plot_bands) {
 		if (is.null(sigma2)){
@@ -248,12 +251,13 @@ plot.interv_fit= function(x, ..., from= NULL, to= NULL, points= 300,
 		else
 			q= stats::qnorm(.975)
 
-		p= predict.interv_fit(x, t, se.fit= T)
 		y= p$prediction
 		upper= y + p$SE*q
 		lower= y - p$SE*q
 		ylim= c(min(lower), max(upper))
 	}
+	else
+		y= p
 
 	# setting plotting parameters, the ones in first list are overwritten by those passed to
 	# this function, the ones in the second list would rather overwrite them
