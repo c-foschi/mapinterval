@@ -16,7 +16,7 @@ A small running example of how to use it:
 ```
 M= c(0, 1, -1, 2, 4)
 
-library(mlinterval)
+library(mlintervals)
 mod= interv_fit(M)
 mod
 # Object of class interv_fit.
@@ -24,3 +24,4 @@ mod
 
 plot(mod)
 ```
+![Rplot](https://user-images.githubusercontent.com/39349171/84865661-e56e5a00-b078-11ea-8187-7a4c495c8538.png)
