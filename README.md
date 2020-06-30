@@ -1,4 +1,4 @@
-# mlintervals
+# mapinterval
 R package for interpolating interval average data. Only method provided is a mean conserving quadratic spline that happens to be the maximum a-posteriori estimator for a Wiener data generating process.
 
 ## Installing
@@ -6,7 +6,7 @@ Package can be installad directly from source using devtools:
 
 ```
 library(devtools)
-install_github("c-foschi/mlintervals")
+install_github("c-foschi/mapinterval")
 ```
 
 Package limSolve is required for tridiagonal system solving and will be automatically installed.
