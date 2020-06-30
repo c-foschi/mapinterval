@@ -16,7 +16,7 @@ A small running example of how to use it:
 ```
 M= c(0, 1, -1, 2, 4)
 
-library(mlintervals)
+library(mapinterval)
 mod= interv_fit(M)
 mod
 # Object of class interv_fit.
